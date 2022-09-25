@@ -1,34 +1,32 @@
 class MyCircularQueue {
+private:
+    vector<int> v;
+    int start = 0, len = 0;
 public:
-    MyCircularQueue(int k) {
-        data.resize(k);
-        maxSize = k;
-    }
-    bool enQueue(int val) {
+    MyCircularQueue(int k): v(k) {}
+    bool enQueue(int value) {
         if (isFull()) return false;
-        tail = (tail + 1) % maxSize;
-        data[tail] = val;
+        v[(start + len++) % v.size()] = value;
         return true;
     }
     bool deQueue() {
         if (isEmpty()) return false;
-        if (head == tail) head = 0, tail = -1;
-        else head = (head + 1) % maxSize;
+        start = (start + 1) % v.size();
+        --len;
         return true;
     }
     int Front() {
-        return isEmpty() ? -1 : data[head];
+        if (isEmpty()) return -1;
+        return v[start];
     }
     int Rear() {
-        return isEmpty() ? -1 : data[tail];
+        if (isEmpty()) return -1;
+        return v[(start + len - 1) % v.size()];
     }
     bool isEmpty() {
-        return tail == -1;
+        return !len;
     }
     bool isFull() {
-        return !isEmpty() && (tail + 1) % maxSize == head;
+        return len == v.size();
     }
-private:
-    int maxSize, head = 0, tail = -1;
-    vector<int> data;
 };
