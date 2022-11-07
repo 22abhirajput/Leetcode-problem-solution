@@ -2,27 +2,17 @@ class Solution {
 public:
     int maximum69Number (int num) {
         
-        int newnum = num;
-        int firstoccurence = -1; // first occurence of 6;
-        int currindex = 0;
+        string  newnum = to_string(num);
         
-        while(newnum >0){
-            
-            
-            if(newnum % 10 == 6)
-                firstoccurence = currindex;
+        for(auto &x : newnum){
+            if(x == '6'){
+                x = '9';
+                break;
+            }
                 
-                
-                newnum /= 10;
-                currindex++;
-                
-            
         }
-        
-        
-         return firstoccurence == -1 ? num: num+ 3 * (int)pow(10,firstoccurence) ;
-        
-        
+       
+        return stoi(newnum);
         
     }
 };
