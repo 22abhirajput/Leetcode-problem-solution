@@ -1,19 +1,16 @@
 class Solution:
-    def validIPAddress(self, IP):
-        if "." in IP:
-            splitted = IP.split(".")
-            if len(splitted) != 4: return "Neither"
-            for part in splitted:
-                if len(part) == 0 or (len(part)>1 and part[0] == "0"): return "Neither"
-                if not part.isnumeric() or int(part) > 255: return "Neither"                
-            return "IPv4"        
-        elif ":" in IP:
-            symbols = "0123456789abcdefABCDEF"
-            splitted = IP.split(":")
-            if len(splitted) != 8: return "Neither"
-            for part in splitted:
-                if len(part) == 0 or len(part) > 4: return "Neither"
-                for elem in part:
-                    if elem not in symbols: return "Neither"                 
-            return "IPv6"      
+     def validIPAddress(self, IP):
+
+        def isIPv4(s):
+            try: return str(int(s)) == s and 0 <= int(s) <= 255
+            except: return False
+
+        def isIPv6(s):
+            try: return len(s) <= 4 and int(s, 16) >= 0
+            except: return False
+
+        if IP.count(".") == 3 and all(isIPv4(i) for i in IP.split(".")):
+            return "IPv4"
+        if IP.count(":") == 7 and all(isIPv6(i) for i in IP.split(":")):
+            return "IPv6"
         return "Neither"
