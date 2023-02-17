@@ -11,21 +11,20 @@
  */
 class Solution {
 public:
-    void helper(TreeNode* root, int& minDiff, int& prevVal) {
-        if (root == nullptr)
+    void helper(TreeNode* root, vector<int>& storeNodeVal) {
+        if(root == nullptr)
             return;
-        helper(root -> left, minDiff, prevVal);
-        if (prevVal != -1) {
-            minDiff = min(minDiff, root -> val - prevVal);
-        }
-        prevVal = root -> val;
-        helper(root -> right, minDiff, prevVal);
-        
+        helper(root -> left, storeNodeVal);
+        storeNodeVal.push_back(root -> val);
+        helper(root -> right, storeNodeVal);
     }
     int minDiffInBST(TreeNode* root) {
+        vector<int> storeNodeVal;
+        helper(root, storeNodeVal);
         int minDiff = INT_MAX;
-        int prevVal = -1;
-        helper(root, minDiff, prevVal);
+        for (int i = 0; i < storeNodeVal.size()-1; i++) {
+            minDiff = min(minDiff, storeNodeVal[i+1] - storeNodeVal[i]);
+        }
         return minDiff;
     }
 };
