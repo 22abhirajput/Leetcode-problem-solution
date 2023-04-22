@@ -1,17 +1,19 @@
 class Solution {
 public:
-    vector<vector<int>> memo;
-    int dp(string &s,int i,int j)
-    {
-        if(i>=j)							//Base case.
-            return 0;
-        if(memo[i][j]!=-1)					//Check if we have already calculated the value for the pair `i` and `j`.
-            return memo[i][j];
-        return memo[i][j]=s[i]==s[j]?dp(s,i+1,j-1):1+min(dp(s,i+1,j),dp(s,i,j-1));		//Recursion as mentioned above.
-    }
     int minInsertions(string s) 
     {
-        memo.resize(s.length(),vector<int>(s.length(),-1));
-        return dp(s,0,s.length()-1);
+        vector<int> memo(s.length(),0);
+        int prev,temp;
+        for(int i=s.length()-2;i>=0;i--)
+        {
+            prev=0;                                          //This stores the value at memo[i+1][j-1];
+            for(int j=i;j<s.length();j++)
+            {
+                temp=memo[j];                               //Get the value of memo[i+1][j].
+                memo[j]=s[i]==s[j]?prev:1+min(memo[j],memo[j-1]);     //memo[j]=memo[i+1][j], memo[j-1]=memo[i][j-1], prev=memo[i+1][j-1].
+                prev=temp;                        //Store the value of memo[i+1][j] to use it as memo[i+1][j-1] in the next iteration.
+            }
+        }
+        return memo[s.length()-1];
     }
 };
